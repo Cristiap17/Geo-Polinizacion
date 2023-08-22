@@ -1,14 +1,14 @@
-import React from 'react'
 import { Map } from 'mapbox-gl'
 import { MapContext, PlacesContext } from '../context'
-import { useContext, useRef, useLayoutEffect } from 'react'
+import { useContext, useRef, useLayoutEffect, useEffect } from 'react'
 import { Loading } from './Loading'
 
 export const MapView = () => {
 
 const { state } = useContext( PlacesContext ) 
-const { setMap } = useContext( MapContext )
+const { setMap, setMarkers, setLines } = useContext( MapContext )
 const mapDiv = useRef(null)
+
 
 useLayoutEffect(() => {
   if (!state.isLoading) {
@@ -16,18 +16,24 @@ useLayoutEffect(() => {
       container: mapDiv.current , // container ID
       style: 'mapbox://styles/mapbox/streets-v12', // style URL
       center: state.userLocation, // starting position [lng, lat]
-      zoom: 14, // starting zoom
+      zoom: 16, // starting zoom
       });
 
       setMap( map )
-  }
-}, [ state.isLoading ])
+      setMarkers( map )
+      setLines(map)
+    }
+    
+  }, [ state.isLoading ])
 
 if (state.isLoading) {
     return(<Loading/>)
 }
 
   return (
+    <>
+    {/* filters */}
+    <div>filters</div>
     <div  ref={ mapDiv }
           style={{
             height: '100vh',
@@ -37,7 +43,7 @@ if (state.isLoading) {
             left:0,
           }}
     >
-        {/* {state.userLocation?.join()} */}
     </div>
+    </>
   )
 }

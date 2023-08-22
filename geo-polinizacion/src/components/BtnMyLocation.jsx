@@ -13,7 +13,7 @@ export const BtnMyLocation = () => {
         if (!state.userLocation) throw new Error('No hay ubicación de usuario.')
 
         stateMap.map?.flyTo({
-            zoom: 14,
+            zoom: 16,
             center: state.userLocation
         })
     }
